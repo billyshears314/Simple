@@ -5,20 +5,50 @@
 </head>
 <body>
 
-<button id="btn">Click me!</button>
-<div id="results"></div>
+<div id="results">
+
+<div id="location"></div>
+<div id="description"></div>
+<div id="temp"></div>
+<div id="min_temp"></div>
+<div id="max_temp"></div>
+
+</div>
 
 <script src="js/jquery-2.1.3.min.js"></script>
 <script>
 	$(function(){
-	
-		$('#btn').click(function(){
 		
-			$('#results').html("<b>IT WORKS</b>");
-		
-		});
+			$.ajax({
+			   url: 'http://api.openweathermap.org/data/2.5/weather?q=Raynham,MA',
+			   data: {},
+			   type: 'GET',
+			   dataType: 'json',
+			   success: function(data) {
+				//	$('#results').html(""+JSON.stringify(data));
+					console.log(data.name);
+					$('#location').text(data.name);
+					console.log(data.weather[0].description);
+					$('#description').text(data.weather[0].description);
+					console.log(kelvinToFahrenheit(data.main.temp));
+					$('#temp').text(kelvinToFahrenheit(data.main.temp));
+					console.log(data.main.temp_min);
+					$('#min_temp').text(kelvinToFahrenheit(data.main.temp_min));
+					console.log(data.main.temp_max);
+					$('#max_temp').text(kelvinToFahrenheit(data.main.temp_max));
+					console.log(data.sys.sunrise);
+					console.log(data.sys.sunset);
+			   }
+			   
+			});
 	
 	});
+	
+	function kelvinToFahrenheit(temp){
+
+		return ((temp-272.15)*1.8+32).toFixed(1);
+	
+	}
 </script>
 
 </body>
